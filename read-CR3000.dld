@@ -1,0 +1,23 @@
+Public LoggerTemp, BattV
+Public FTPResult
+'Define Data Tables.
+DataTable (FTPTest,1,-1) 'Set table size to -1 to autoallocate.
+ DataInterval (0,15,Sec,10)
+ Minimum (1,BattV,FP2,False,False)
+ Sample (1,LoggerTemp,FP2)
+EndTable
+'Main Program
+BeginProg
+ Scan (1,Sec,0,0)
+ PanelTemp (LoggerTemp,250)
+ Battery (BattV)
+ CallTable FTPTest
+ NextScan
+ SlowSequence
+ Do
+ Delay(1,10,Sec)
+ 'Create file named FTP_Tutorial_1.csv and append data to the file every 5 minutes
+ FTPResult=FTPClient ("192.168.1.5", "scc", "Password", "FTPTest",
+"/data/SCCRawData/CR3000.csv", 9, 0, 5, Min, -1008)
+ Loop
+EndProg
